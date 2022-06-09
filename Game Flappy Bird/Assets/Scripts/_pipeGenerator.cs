@@ -21,8 +21,7 @@ public class _pipeGenerator : MonoBehaviour
         if (enabelGeneratePipe == true)
         {
             countdown -= Time.deltaTime;    //Mỗi frame thì countdown-=1/FPS
-                                            //VD: 30FPS--> 30 khung hình/1s
-                                            //==> Mỗi frame countdown giảm đi 1/30s. Mà 1s gồm 30frame --> countdown giảm đúng 1 đvi
+                                          
             if (countdown <= 0)//Sinh ra ống
             {
                 //Instantiate: Khởi tạo ra 1 GameObj

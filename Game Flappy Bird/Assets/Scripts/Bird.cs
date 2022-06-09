@@ -16,9 +16,11 @@ public class Bird : MonoBehaviour
     private int score;
     public Text scoreText;
 
+    public GameObject gameOverObj;
+
     private void Awake()
     {
-        SoundController.instance.PlayThisSound("GameMusic", 0.2f);
+        
         rigibody =this.gameObject.GetComponent <Rigidbody2D>();
         levelStart = false;
         rigibody.gravityScale = 0;
@@ -26,7 +28,13 @@ public class Bird : MonoBehaviour
         scoreText.text = score.ToString();
         message.GetComponent<SpriteRenderer>().enabled = true;
     }
-   
+    private void Start()
+    {
+        SoundController.instance.PlayThisSound("GameMusic", 0.2f);
+        Time.timeScale = 1;
+        rigibody = GetComponent<Rigidbody2D>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -55,22 +63,29 @@ public class Bird : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         SoundController.instance.PlayThisSound("hit", 0.5f); ///Lôiix
-        ReloadScene();
-        score = 0;
-        scoreText.text = score.ToString();
+        GameOver();
+        gameOverObj.SetActive(true);
+        /*score = 0;
+        scoreText.text = score.ToString();*/
 
     }
 
     private void OnTriggerEnter2D(Collider2D collection)
     {
         SoundController.instance.PlayThisSound("point", 0.5f);
-        score += 1;
+        score += 10;
         scoreText.text = score.ToString();
     }
-
-    public void ReloadScene()
+    
+    public void GameOver()
     {
 
-        SceneManager.LoadScene("GamePlay");
+        //SceneManager.LoadScene("GamePlay");
+        Time.timeScale = 0;
+    }
+
+    public void resetGame()
+    {
+        SceneManager.LoadScene(1);
     }
 }
