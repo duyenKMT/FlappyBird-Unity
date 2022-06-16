@@ -13,8 +13,10 @@ public class Bird : MonoBehaviour
 
     public GameObject message;
 
+    private int mang;
     private int score;
     public Text scoreText;
+    public Text mangText;
 
     public GameObject gameOverObj;
 
@@ -25,21 +27,23 @@ public class Bird : MonoBehaviour
         levelStart = false;
         rigibody.gravityScale = 0;
         score = 0;
-        scoreText.text = score.ToString();
+        scoreText.text = scoreText.text+score.ToString();
+        mang = 3;
+        mangText.text = mangText.text+mang.ToString();
         message.GetComponent<SpriteRenderer>().enabled = true;
     }
     private void Start()
     {
         SoundController.instance.PlayThisSound("GameMusic", 0.2f);
         Time.timeScale = 1;
-        rigibody = GetComponent<Rigidbody2D>();
+       // rigibody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //Kiểm tra Space có bấm không
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             SoundController.instance.PlayThisSound("wing", 0.5f);
             if (levelStart == false)
@@ -62,9 +66,14 @@ public class Bird : MonoBehaviour
 // Xử lý va chạm
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        SoundController.instance.PlayThisSound("hit", 0.5f); ///Lôiix
-        GameOver();
-        gameOverObj.SetActive(true);
+        SoundController.instance.PlayThisSound("hit", 0.5f);
+        mang -= 1;
+        mangText.text = "x" + mang.ToString();
+        if (mang == 0)
+        {
+            GameOver();
+            gameOverObj.SetActive(true);
+        }
         /*score = 0;
         scoreText.text = score.ToString();*/
 
@@ -74,7 +83,7 @@ public class Bird : MonoBehaviour
     {
         SoundController.instance.PlayThisSound("point", 0.5f);
         score += 10;
-        scoreText.text = score.ToString();
+        scoreText.text = "Core: "+ score.ToString();
     }
     
     public void GameOver()
